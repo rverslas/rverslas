@@ -3,28 +3,41 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Rverslas - Testinė svetainė</title>
+  <title>Rverslas.lt - Reklamuok savo verslą</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background: #f0f2f5;
-      color: #333;
+      font-family: 'Segoe UI', sans-serif;
+      background: #f8f9fa;
       margin: 0;
-      padding: 20px;
+      padding: 0;
     }
     header {
-      background: #0077cc;
+      background: #005bbb;
       color: white;
-      padding: 15px;
+      padding: 20px;
       text-align: center;
     }
-    main {
-      max-width: 600px;
-      margin: 40px auto;
+    header h1 {
+      margin: 0;
+    }
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .form-section {
       background: white;
       padding: 20px;
+      margin-bottom: 30px;
       border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    input, textarea {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0 20px 0;
+      border: 1px solid #ccc;
+      border-radius: 4px;
     }
     button {
       background: #0077cc;
@@ -37,73 +50,75 @@
     button:hover {
       background: #005fa3;
     }
-    #output {
-      margin-top: 20px;
-      font-weight: bold;
-      color: green;
+    .ads-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 20px;
     }
-    form {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      margin-top: 30px;
+    .ad-card {
+      background: white;
+      padding: 15px;
+      border-radius: 6px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.1);
     }
-    input, textarea {
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      font-size: 1rem;
+    .ad-card h4 {
+      margin-top: 0;
     }
-    .entry {
-      background: #e6f4ff;
-      padding: 10px;
-      margin-top: 20px;
-      border-left: 4px solid #0077cc;
+    .ad-card a {
+      color: #0077cc;
+      text-decoration: none;
     }
   </style>
 </head>
 <body>
   <header>
-    <h1>Rverslas.lt - Testinė svetainė</h1>
+    <h1>Rverslas.lt</h1>
+    <p>Nemokama verslo reklamos platforma</p>
   </header>
-  <main>
-    <p>Čia bus tavo verslo reklamos platforma.</p>
-    <button onclick="showMessage()">Spausk mane</button>
-    <div id="output"></div>
+  <div class="container">
+    <section class="form-section">
+      <h2>Įkelk savo verslą</h2>
+      <form id="adForm">
+        <label>Verslo pavadinimas:</label>
+        <input type="text" id="name" required />
 
-    <form onsubmit="submitForm(event)">
-      <h2>Įkelk savo verslo reklamą</h2>
-      <input type="text" id="name" placeholder="Verslo pavadinimas" required>
-      <textarea id="description" placeholder="Trumpas aprašymas" rows="4" required></textarea>
-      <input type="url" id="link" placeholder="Svetainės arba socialinės medijos nuoroda" required>
-      <button type="submit">Pateikti</button>
-    </form>
+        <label>Trumpas aprašymas:</label>
+        <textarea id="description" required></textarea>
 
-    <div id="entries"></div>
-  </main>
+        <label>Svetainės nuoroda:</label>
+        <input type="url" id="link" required />
+
+        <button type="submit">Pateikti skelbimą</button>
+      </form>
+    </section>
+
+    <section>
+      <h2>Rodyti verslai</h2>
+      <div id="ads-container" class="ads-grid"></div>
+    </section>
+  </div>
 
   <script>
-    function showMessage() {
-      document.getElementById('output').innerText = "✅ Veikia! Ši svetainė reaguoja į mygtuko paspaudimą.";
-    }
+    const form = document.getElementById('adForm');
+    const adsContainer = document.getElementById('ads-container');
 
-    function submitForm(event) {
-      event.preventDefault();
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
       const name = document.getElementById('name').value;
       const description = document.getElementById('description').value;
       const link = document.getElementById('link').value;
 
-      const entry = document.createElement('div');
-      entry.className = 'entry';
-      entry.innerHTML = `<strong>${name}</strong><p>${description}</p><a href="${link}" target="_blank">Daugiau</a>`;
+      const card = document.createElement('div');
+      card.className = 'ad-card';
+      card.innerHTML = \`
+        <h4>\${name}</h4>
+        <p>\${description}</p>
+        <a href="\${link}" target="_blank">Apsilankyti</a>
+      \`;
 
-      document.getElementById('entries').appendChild(entry);
-
-      // Išvalyti formą
-      document.getElementById('name').value = '';
-      document.getElementById('description').value = '';
-      document.getElementById('link').value = '';
-    }
+      adsContainer.prepend(card);
+      form.reset();
+    });
   </script>
 </body>
 </html>
