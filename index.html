@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Rverslas - Testin� svetain�</title>
+  <title>Rverslas - Testinė svetainė</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -37,15 +37,73 @@
     button:hover {
       background: #005fa3;
     }
+    #output {
+      margin-top: 20px;
+      font-weight: bold;
+      color: green;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 30px;
+    }
+    input, textarea {
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 1rem;
+    }
+    .entry {
+      background: #e6f4ff;
+      padding: 10px;
+      margin-top: 20px;
+      border-left: 4px solid #0077cc;
+    }
   </style>
 </head>
 <body>
   <header>
-    <h1>Rverslas.lt - Testin� svetain�</h1>
+    <h1>Rverslas.lt - Testinė svetainė</h1>
   </header>
   <main>
-    <p>�ia bus tavo verslo reklamos platforma.</p>
-    <button onclick="alert('Sveiki! �ia testas.')">Spausk mane</button>
+    <p>Čia bus tavo verslo reklamos platforma.</p>
+    <button onclick="showMessage()">Spausk mane</button>
+    <div id="output"></div>
+
+    <form onsubmit="submitForm(event)">
+      <h2>Įkelk savo verslo reklamą</h2>
+      <input type="text" id="name" placeholder="Verslo pavadinimas" required>
+      <textarea id="description" placeholder="Trumpas aprašymas" rows="4" required></textarea>
+      <input type="url" id="link" placeholder="Svetainės arba socialinės medijos nuoroda" required>
+      <button type="submit">Pateikti</button>
+    </form>
+
+    <div id="entries"></div>
   </main>
+
+  <script>
+    function showMessage() {
+      document.getElementById('output').innerText = "✅ Veikia! Ši svetainė reaguoja į mygtuko paspaudimą.";
+    }
+
+    function submitForm(event) {
+      event.preventDefault();
+      const name = document.getElementById('name').value;
+      const description = document.getElementById('description').value;
+      const link = document.getElementById('link').value;
+
+      const entry = document.createElement('div');
+      entry.className = 'entry';
+      entry.innerHTML = `<strong>${name}</strong><p>${description}</p><a href="${link}" target="_blank">Daugiau</a>`;
+
+      document.getElementById('entries').appendChild(entry);
+
+      // Išvalyti formą
+      document.getElementById('name').value = '';
+      document.getElementById('description').value = '';
+      document.getElementById('link').value = '';
+    }
+  </script>
 </body>
 </html>
